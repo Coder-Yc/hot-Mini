@@ -1,0 +1,12 @@
+/* pages/HotNoTop/HotNoTop.wxss */
+@import "../colorui/main.wxss";
+@import "../colorui/icon.wxss";
+
+/* .text-xs {
+    width: 80px;
+    margin-right: 20px;
+} */
+
+.cu-avatar {
+    background-color: white;
+}
