@@ -1,1 +1,13 @@
-<view class="contend"> <view class="contend1">11111</view>222222 </view>
+<view class="contend">
+    <view class="contend1" wx:if="{{ isTrue }}">
+        <view>{{ term }}</view>
+    </view>
+
+    <view bindtap="showdates" wx:elif="{{ isTrue2 }}" ">
+        <view>{{ item }}</view>
+    </view>
+
+    <view bindtap="showdates " wx:else="{{ isTrue3 }} " ">
+        <view>{{ item }}</view>
+    </view>
+</view>

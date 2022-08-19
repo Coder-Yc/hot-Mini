@@ -45,7 +45,7 @@ const parseHtml = function (template) {
     let root = null
     let stack = []
     let currentParent
-    template = template.replace('\n', '')
+
     template = template.replace(/<!--(.*?)-->/g, '')
 
     //创建ast节点
@@ -86,7 +86,9 @@ const parseHtml = function (template) {
             currentParent.children.push({
                 type: 1,
                 text,
-                parent: currentParent
+                parent: currentParent,
+                children: [],
+                attrs: []
             })
     }
 
@@ -101,6 +103,7 @@ const parseHtml = function (template) {
         const textEnd = template.indexOf('<')
         if (textEnd === 0) {
             const { startTag, html } = parseStartTag(template)
+
             template = html
             // console.log(html)
             //匹配开始标签
@@ -122,6 +125,10 @@ const parseHtml = function (template) {
                 textN(text)
                 advance(text.length)
             }
+        }
+        if (textEnd < 0) {
+            advance(template.length)
+            continue
         }
     }
     console.log(root)

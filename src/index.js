@@ -1,6 +1,7 @@
 const inlineCss = require('inline-css')
 
 const parseHtml = require('./parse')
+const astTraverse = require('./ast-traverse')
 const fs = require('../utils/fs-async.js')
 const path = require('path')
 const { cwd } = require('node:process')
@@ -56,7 +57,8 @@ async function init() {
     const { htmlCode, cssCode, jsCode } = code
     let htmlCss = await inlineCssFn(htmlCode, cssCode)
     let ast = parseHtml(htmlCss)
-    console.log(ast)
+    let newHtml = astTraverse(ast)
+    console.log(newHtml)
 }
 
 init()
