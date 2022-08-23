@@ -1,20 +1,21 @@
-const path = require("path");
+const path = require('path')
 
 module.exports = {
-    mode: "development",
-    context: '.'
+    target: ['web', 'es5'],
+    devtool: 'cheap-module-source-map',
+    mode: 'development',
     entry: {
-        main: "./src/index",
+        main: './dist/index'
     },
     output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "bundle.js",
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js'
     },
     resolve: {
         alias: {
-            src: path.resolve(__dirname, "src"),
-            utils: path.resolve(__dirname, "utils"),
-        },
+            src: path.resolve(__dirname, 'src'),
+            utils: path.resolve(__dirname, 'utils')
+        }
         // extensions: [".js"],
     },
     module: {
@@ -23,12 +24,12 @@ module.exports = {
                 test: /\.js/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env"],
-                    },
-                },
-            },
-        ],
-    },
-};
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            }
+        ]
+    }
+}

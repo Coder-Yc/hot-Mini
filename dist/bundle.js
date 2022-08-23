@@ -1,31 +1,93 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ "./dist/index.js":
+/*!***********************!*\
+  !*** ./dist/index.js ***!
+  \***********************/
+/***/ (function(module) {
 
-eval("var fs = __webpack_require__(/*! utils/fs-async.js */ \"./utils/fs-async.js\"); // 此文件请见下一步中的代码\n// promise风格\n// fs.readFile(\"input.txt\")\n//     .then((data) => {\n//         console.log(\"异步promise读取: \" + data.toString());\n//     })\n//     .catch((err) => {\n//         console.error(err);\n//     });\n// // await风格，tip：要在async函数中方可使用await语法\n// const data = await fs.readFile(\"input.txt\");\n// console.log(\"异步await读取: \" + data.toString());\n\n\nconsole.log(fs);\n\n//# sourceURL=webpack://hotMini/./src/index.js?");
+function runCode() {
+  var Page = function Page(page) {
+    return page;
+  };
 
-/***/ }),
+  return Page({
+    setdata: function setdata(dictData) {
+      for (var i in dictData) {
+        this.data[i] = dictData[i];
+      }
 
-/***/ "./utils/fs-async.js":
-/*!***************************!*\
-  !*** ./utils/fs-async.js ***!
-  \***************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+      var render = function render($data) {
+        'use strict';
 
-eval("var fs = __webpack_require__(Object(function webpackMissingModule() { var e = new Error(\"Cannot find module 'fs'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));\n\nvar util = __webpack_require__(Object(function webpackMissingModule() { var e = new Error(\"Cannot find module 'util'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));\n/**\n * 将nodejs的fs模块的异步操作变为promise模式\n */\n\n\nfunction FsAsync() {\n  var prototype = this.constructor.prototype;\n\n  var isFun = function isFun(e) {\n    return Object.prototype.toString.call(e) === \"[object Function]\";\n  };\n\n  var isSync = function isSync(s) {\n    return s.indexOf(\"Sync\") !== -1 || s.indexOf(\"sync\") !== -1;\n  };\n\n  for (var p in fs) {\n    var prop = fs[p];\n\n    if (isFun(prop)) {\n      prototype[p] = isSync(prop.name) ? prop : util.promisify(prop);\n    }\n  }\n}\n\nmodule.exports = new FsAsync();\n\n//# sourceURL=webpack://hotMini/./utils/fs-async.js?");
+        $data = $data || {};
+        var $out = '',
+            $line = [0, 0],
+            isTrue = $data.isTrue,
+            $escape = $imports.$escape,
+            item1 = $data.item1,
+            item2 = $data.item2,
+            item3 = $data.item3;
+
+        try {
+          $out += "<view class='contend'style='background-color: white;'> ";
+          $line = [0, 55];
+
+          if (isTrue) {
+            $out += "<view class='contend1'style='background-color: white;'> <view > ";
+            $line = [0, 133];
+            $out += $escape(item1);
+            $out += " </view> </view>";
+            $line = [0, 158];
+          }
+
+          $out += "<view bindtap='showdates'> <view > ";
+          $line = [0, 200];
+          $out += $escape(item2);
+          $out += " </view> </view><view bindtap='showdates '> <view > ";
+          $line = [0, 261];
+          $out += $escape(item3);
+          $out += " </view> </view> </view>";
+        } catch (error) {
+          throw {
+            name: 'RuntimeError',
+            path: null,
+            message: error.message,
+            line: $line[0] + 1,
+            column: $line[1] + 1,
+            source: "<view class='contend'style='background-color: white;'> {{if isTrue }}<view class='contend1'style='background-color: white;'> <view > {{item1}} </view> </view>{{/if}}<view bindtap='showdates'> <view > {{item2}} </view> </view><view bindtap='showdates '> <view > {{item3}} </view> </view> </view>",
+            stack: error.stack
+          };
+        }
+
+        return $out;
+      };
+
+      var html = render(this.data);
+      console.log(html);
+      this.setData({
+        html: this.parse(html)
+      });
+    },
+    data: {
+      isTrue: false,
+      isTrue2: false,
+      isTrue3: true,
+      item1: 1,
+      item2: 2,
+      item3: 3
+    },
+    onLoad: function onLoad() {
+      this.setdata();
+    },
+    showdates: function showdates() {
+      console.log('我是showdates函数');
+    }
+  });
+}
+
+module.exports = runCode;
 
 /***/ })
 
@@ -59,8 +121,9 @@ eval("var fs = __webpack_require__(Object(function webpackMissingModule() { var 
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./dist/index.js");
 /******/ 	
 /******/ })()
 ;
+//# sourceMappingURL=bundle.js.map

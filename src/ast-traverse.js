@@ -9,9 +9,11 @@ function attrsFn(attrs) {
         }
     })
 }
+let index = 0
 function getNextAttrs(attrs, key) {
     if (attrs.length === 0) return
-    return attrs.filter((attr) => {
+    return attrs.find((attr) => {
+        console.log(++index)
         if (attr.name == key) {
             return attr.value
         }
@@ -36,8 +38,7 @@ function astTraverse(ast) {
                     ifFlag = true
                 } else if (attr.name === 'wx:elif') {
                     attr.value = attr.value.replace(/({{) | (}})/g, '')
-
-                    html = html + `{{else if ${attr.value} }}`
+                    // html = html + `{{else if ${attr.value} }}`
                 } else if (attr.name === 'wx:for') {
                     attr.value = attr.value.replace(/({{) | (}})/g, '')
                     html = html + `{{each ${attr.value}  ${item} ${index}}}`
@@ -60,18 +61,12 @@ function astTraverse(ast) {
                 } </${node.tag}>`
         }
 
-        let elifValue = ast[index + 1]?.attrs
-            ? getNextAttrs(ast[index + 1]?.attrs, 'wx:elif')
-            : []
-        let elseValue = ast[index + 1]?.attrs
-            ? getNextAttrs(ast[index + 1]?.attrs, 'wx:else')
-            : []
-        console.log(elifValue)
-        if (ast[index + 1] && elifValue?.length) {
-            html =
-                html +
-                `{{else if ${elifValue[0].value.replace(/({{) | (}})/g, '')} }}`
-        } else if ((ast[index + 1] && elseValue?.length) || ifFlag) {
+        let elseValue =
+            ast[index + 1]?.attrs && ast[index + 1]?.attrs.length > 0
+                ? getNextAttrs(ast[index + 1]?.attrs, 'wx:else')
+                : []
+      
+        if ((ast[index + 1] && elseValue?.length) || ifFlag) {
             html = html + `{{/if}}`
         } else if (forFlag) {
             html = html + `{{/each}}`

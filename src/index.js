@@ -1,8 +1,10 @@
 const inlineCss = require('inline-css')
+const artTemplate = require('art-template')
 
 const parseHtml = require('./parse')
 const astTraverse = require('./ast-traverse')
 const fs = require('../utils/fs-async.js')
+const encode = require('./encode')
 const path = require('path')
 const { cwd } = require('node:process')
 
@@ -50,15 +52,63 @@ const inlineCssFn = async function (html, css) {
     const htmlCss = await inlineCss(html, options)
     return htmlCss
 }
+/**
+ * 拼接字符串
+ */
+const concatStr = (render, jsCode) => {
+    console.log(render, jsCode)
+    let onload =
+        /onLoad:(.*)function(.*)\((.*?)\)(.*){ | (.*)onLoad(.*)\((.*?)\)(.*){/
+    let res = jsCode.match(onload)
+    if (res) {
+        jsCode = jsCode.replace(res[0], res[0] + 'this.setdata()')
+    }
+    jsCode = jsCode.replace(
+        'Page({',
+        `var Page = function(page){
+        return page
+      }
+    return Page({
+      ${
+          res
+              ? ''
+              : `
+      onLoad: function (options) {
+        options = this.options;
+        this.setdata({})
+      },
+      `
+      }
+    setdata: function setdata(dictData) {
+      for(var i in dictData){
+        this.data[i] = dictData[i]
+      }
+      const render = ${render};
+      var html = render(this.data);
+      console.log(html);
+      this.setData({html : this.parse(html)});
+    },`
+    )
 
-async function init() {
-    const paths = [JS_PATH, WXML_PATH, WXSS_PATH]
-    const code = await readFileFn(paths)
-    const { htmlCode, cssCode, jsCode } = code
-    let htmlCss = await inlineCssFn(htmlCode, cssCode)
-    let ast = parseHtml(htmlCss)
-    let newHtml = astTraverse(ast)
-    console.log(newHtml)
+    let str = `function runCode(){ ${jsCode} }`
+    str = str.replace(/\\n/g, '')
+    str = str.replace(/\\"/g, "'")
+    str += `module.exports = runCode;`
+    return str
 }
 
-init()
+;(async function init() {
+    try {
+        const paths = [JS_PATH, WXML_PATH, WXSS_PATH]
+        const code = await readFileFn(paths)
+        const { htmlCode, cssCode, jsCode } = code
+        let htmlCss = await inlineCssFn(htmlCode, cssCode)
+        let ast = parseHtml(htmlCss)
+        let newHtml = astTraverse(ast)
+        let render = artTemplate.compile(newHtml)
+        let str = concatStr(render, jsCode)
+        await fs.writeFile('dist/index.js', str, { encoding: 'utf8' })
+    } catch (error) {
+        console.log(error)
+    }
+})()
