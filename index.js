@@ -22,3 +22,14 @@ setTimeout(
     })(),
     0
 );
+
+
+let a=  5
+class A {
+    a=10
+    fn() {
+        console.log(this.a);
+    }
+}
+const a= new A().fn
+b()
